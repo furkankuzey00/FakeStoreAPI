@@ -28,3 +28,19 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// Lägg till en task för att kopiera statiska filer
+task copyStaticFiles(type: Copy) {
+    from 'src/main/resources/static'
+    into "$buildDir/resources/main/static"
+}
+
+// Säkerställ att 'build' tasken körs efter att statiska filer kopieras
+build.dependsOn(copyStaticFiles)
+
+// Se till att alla relevanta tasker beroende av 'copyStaticFiles'
+bootJar.dependsOn(copyStaticFiles)
+jar.dependsOn(copyStaticFiles)
+test.dependsOn(copyStaticFiles)
+resolveMainClassName.dependsOn(copyStaticFiles) // Lägg till beroende för resolveMainClassName
+compileTestJava.dependsOn(copyStaticFiles) // Lägg till beroende för compileTestJava
