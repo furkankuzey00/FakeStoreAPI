@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beställning</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h1 class="text-center mb-4">Beställningsformulär</h1>
+
+        <form id="orderForm" action="/orders/place-order" method="post" onsubmit="return validateForm()">
+            <!-- Dolda fält för produktinformation -->
+            <input type="hidden" name="product" id="hidden-product" value="">
+            <input type="hidden" name="price" id="hidden-price" value="">
+
+            <!-- Visa produktinformation -->
+            <div class="mb-3">
+                <label for ="product-name" class="form-label">Produkt</label>
+                <p id="product-name"></p>  <!-- Här kommer produktnamnet att visas -->
+            </div>
+
+            <div class="mb-3">
+                <label for= "product-price" class="form-label">Pris</label>
+                <p id="product-price"></p>  <!-- Här kommer produktens pris att visas -->
+            </div>
+
+            <!-- Formulärfält -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Namn</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <span id="nameError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Telefon</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+                <span id="phoneError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">E-post</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <span id="emailError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Leveransadress</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+                <span id="addressError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="postalCode" class="form-label">Postnummer</label>
+                <input type="text" class="form-control" id="postalCode" name="postalCode" required>
+                <span id="postalCodeError" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="city" class="form-label">Ort</label>
+                <input type="text" class="form-control" id="city" name="city" required>
+                <span id="cityError" class="text-danger"></span>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Slutför beställning</button>
+                <a href="/" class="btn btn-secondary">Avbryt</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Funktion för att hämta URL-parametrar
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Validering av formuläret
+    function validateForm() {
+        let valid = true;
+
+        // Namnvalidering
+        const name = document.getElementById('name').value;
+        const nameError = document.getElementById('nameError');
+        if (name.length < 2 || name.length > 50) {
+            nameError.textContent = "Namnet måste vara mellan 2 och 50 tecken.";
+            valid = false;
+        } else {
+            nameError.textContent = "";
+        }
+
+        // Telefonvalidering
+        const phone = document.getElementById('phone').value;
+        const phoneError = document.getElementById('phoneError');
+        const phoneRegex = /^[\d\-\(\)\s]{2,50}$/;
+        if (!phoneRegex.test(phone)) {
+            phoneError.textContent = "Telefonnummer får innehålla siffror, bindestreck och parenteser. Max 50 tecken.";
+            valid = false;
+        } else {
+            phoneError.textContent = "";
+        }
+
+        // E-postvalidering
+        const email = document.getElementById('email').value;
+        const emailError = document.getElementById('emailError');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email.length > 50 || !emailRegex.test(email)) {
+            emailError.textContent = "E-postadressen måste innehålla '@' och vara max 50 tecken.";
+            valid = false;
+        } else {
+            emailError.textContent = "";
+        }
+
+        // Adressvalidering
+        const address = document.getElementById('address').value;
+        const addressError = document.getElementById('addressError');
+        if (address.length < 2 || address.length > 50) {
+            addressError.textContent = "Leveransadressen måste vara mellan 2 och 50 tecken.";
+            valid = false;
+        } else {
+            addressError.textContent = "";
+        }
+
+        // Postnummervalidering
+        const postalCode = document.getElementById('postalCode').value;
+        const postalCodeError = document.getElementById('postalCodeError');
+        if (!/^\d{5}$/.test(postalCode)) {
+            postalCodeError.textContent = "Postnummer måste vara exakt 5 siffror.";
+            valid = false;
+        } else {
+            postalCodeError.textContent = "";
+        }
+
+        // Ortvalidering
+        const city = document.getElementById('city').value;
+        const cityError = document.getElementById('cityError');
+        if (city.length < 2 || city.length > 50) {
+            cityError.textContent = "Ort måste vara mellan 2 och 50 tecken.";
+            valid = false;
+        } else {
+            cityError.textContent = "";
+        }
+
+        return valid;
+    }
+
+    window.onload = function() {
+        // Hämta parametrarna från URL:n
+        const product = getQueryParam('product');
+        const price = getQueryParam('price');
+
+        // Visa produktnamn och pris i formuläret eller på sidan
+        if (product && price) {
+            document.getElementById('product-name').innerText = product;
+            document.getElementById('product-price').innerText = price + ' SEK';
+
+            // Fyll också i dolda fält för att skicka data vidare vid form-submit
+            document.getElementById('hidden-product').value = product;
+            document.getElementById('hidden-price').value = price;
+        }
+        // Funktion för att hämta produktinformation från API och sätta produktens pris
+        function loadProductDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('productId');  // Exempel på hur du kan hämta en parameter från URL
+
+            fetch(`https://fakestoreapi.com/products/${productId}`)
+                .then(response => response.json())
+                .then(product => {
+                    // Sätt produktens pris och namn i rätt element på sidan
+                    document.getElementById('product-price').innerText = `${product.price} SEK`;
+                })
+                .catch(error => console.error('Error fetching product details:', error));
+    }
+        {
+
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
