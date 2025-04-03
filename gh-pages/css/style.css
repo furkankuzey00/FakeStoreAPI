@@ -1,0 +1,48 @@
+/* Beställningsformulär */
+.order-form-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #222; /* Mörk bakgrund för att matcha temat */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.order-form-container h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.order-form-container label {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.order-form-container input,
+.order-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+}
+
+.order-form-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.order-form-container button:hover {
+    background-color: #e64a19;
+}
