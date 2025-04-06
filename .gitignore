@@ -5,7 +5,7 @@
 
 # Docker
 .dockerignore
-Dockerfile
+build/libs/Dockerfile
 
 HELP.md
 .gradle
