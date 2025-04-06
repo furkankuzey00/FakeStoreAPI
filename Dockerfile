@@ -10,6 +10,7 @@ WORKDIR /app
 # Steg 4: Kopiera din JAR-fil från din byggmapp till containern
 COPY build/libs/StoreAPI-0.0.1-SNAPSHOT.jar /app/app.jar
 
+
 # Steg 5: Exponera port 8080 (standardport för Spring Boot)
 EXPOSE 8080
 
