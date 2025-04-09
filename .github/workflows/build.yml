@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t furkankuzey00/storeapi:latest -f build/libs/Dockerfile .
+        run: docker build -t furkankuzey00/storeapi:latest .
 
       - name: Push Docker image
         run: docker push furkankuzey00/storeapi:latest
